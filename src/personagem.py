@@ -1,5 +1,4 @@
 from ursina import Entity
-# Problema no import, precisamos achar o time.dt
 from ursina import *
 
 
@@ -11,43 +10,42 @@ class Personagem(object):
                               scale=(.6, .7),
                               render_queue=1,
                               eternal=False,
-                              collider="box")
-        # Just a start space to prevent bugs (wall collision)
-        self.jogador.x, self.jogador.y = 2, 2
+                              collider="box",
+                              position=(4, 4, 0))  # Just a start space to prevent bugs (wall collision)
         self.last_key = last_key
+        self.x = self.jogador.x
+        self.y = self.jogador.y
 
     def get_jogador(self):
         return self.jogador
 
-    def get_world_position(self):
-        return self.jogador.world_position
+    def get_player_position(self):
+        return round(self.jogador.x, 0), round(self.jogador.y, 0)
 
     def walk(self, movimento, x, y):
-        # teste = self.jogador.x + x * time.dt * 100
-
         self.jogador.texture = movimento + ".png"
         # self.jogador.texture = Animation("resources/player/player", autoplay=True, loop=True)
 
         # Collision method
-        hit_info = self.jogador.intersects()
+        p = self.jogador
+        hit_info = p.intersects()
+        pos = hit_info.world_point
         if not hit_info.hit:
-            self.jogador.x += x
-            self.jogador.y += y
+            p.x += x
+            p.y += y
 
             # destroy(hit_info.entity)
         # Prevent the player get stucked into the block
         else:
             # To-do: Do the corner checks (bug)
-            if not self.jogador.x + x >= hit_info.world_point[0] and x < 0 or\
-                    not self.jogador.x + x <= hit_info.world_point[0] and x > 0:
-                self.jogador.x += x
-            elif not self.jogador.y + y >= hit_info.world_point[1] and y < 0 or\
-                    not self.jogador.y + y <= hit_info.world_point[1] and y > 0:
-                self.jogador.y += y
+            if not p.x + x >= pos[0] and x < 0 or\
+                    not p.x + x <= pos[0] and x > 0:
+                p.x += x
+            elif not p.y + y >= pos[1] and y < 0 or\
+                    not p.y + y <= pos[1] and y > 0:
+                p.y += y
 
         self.last_key = movimento
 
     def get_last_key(self):
         return self.last_key
-
-
