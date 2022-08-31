@@ -1,9 +1,11 @@
 from ursina import Entity
 from ursina import *
 
+from src.healthbar import Health
+
 
 class Personagem(object):
-    def __init__(self, last_key=''):
+    def __init__(self, player_pos, last_key=''):
         self.jogador = Entity(model="quad",
                               texture="materials/player/player_1.png",
                               always_on_top=True,
@@ -11,10 +13,13 @@ class Personagem(object):
                               render_queue=1,
                               eternal=False,
                               collider="box",
-                              position=(4, 4, 0))  # Just a start space to prevent bugs (wall collision)
+                              # Just a start space to prevent bugs (wall collision)
+                              position=(player_pos[0], player_pos[1], 0))
         self.last_key = last_key
         self.x = self.jogador.x
         self.y = self.jogador.y
+
+        self.health = Health(self.jogador)
 
     def get_jogador(self):
         return self.jogador

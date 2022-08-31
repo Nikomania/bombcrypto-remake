@@ -9,17 +9,26 @@ from src.bomb import Bomb
 
 
 if __name__ == "__main__":
-    jogo = Ursina(vsync=True,
-                  fullscreen=False)
-    # print(application.compressed_textures_folder)
+    DEVELOPMENT_MODE = True
+
+    game = Ursina(title="BombCrypto Remake",
+                  vsync=True,
+                  fullscreen=False,
+                  borderless=False,
+                  forced_aspect_ratio=True,
+                  show_ursina_splash=not DEVELOPMENT_MODE,
+                  development_mode=DEVELOPMENT_MODE,
+                  editor_ui_enabled=DEVELOPMENT_MODE)
+
     # application.compressed_textures_folder = application.compressed_textures_folder.parent / "resources"
     # application.asset_folder = application.compressed_textures_folder
     # application.internal_textures_folder = application.compressed_textures_folder
-    # print(application.compressed_textures_folder)
-    JOGADOR = Personagem()
-    BOMBA = Bomb()
+
     PLAYER_SPEED = 0.07
-    PLAYER_POS = (0, 0)
+    PLAYER_POS = (4, 4)
+
+    JOGADOR = Personagem(PLAYER_POS)
+    BOMBA = Bomb()
 
     MAPA1 = [["map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick"],
              ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
@@ -63,5 +72,5 @@ if __name__ == "__main__":
                 COMANDOS[key](func()) if callable(func) else COMANDOS[key](*params)
 
     MAPA.gerar_mapa()
-    camera.add_script(SmoothFollow(target=JOGADOR.get_jogador(), offset=(0, 0, -50), speed=6))
-    jogo.run()
+    camera.add_script(SmoothFollow(target=JOGADOR.get_jogador(), offset=(0, 0, -40), speed=10))
+    game.run()
