@@ -54,13 +54,12 @@ if __name__ == "__main__":
                   ["player/player_esq", -PLAYER_SPEED, 0],     # A
                   ["player/player_1", 0, -PLAYER_SPEED],       # S
                   ["player/player_dir", PLAYER_SPEED, 0],      # D
-                  [JOGADOR.get_player_position],               # SPACE
+                  [JOGADOR],               # SPACE
                   []]                                          # 1 - TEST
 
 
     def update():
-        global COMANDOS, PARAMETROS, PLAYER_POS
-        PLAYER_POS = JOGADOR.get_player_position()
+        global COMANDOS, PARAMETROS
         for key, value in held_keys.items():
             if key in COMANDOS.keys() and value != 0:
                 # Take all the params
