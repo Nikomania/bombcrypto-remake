@@ -4,23 +4,29 @@ from ursina.trigger import Trigger
 
 from src.personagem import Personagem
 
+from threading import Timer
 
-class Bomb:
+
+class Bombs:
     def __init__(self, bombs=None):
-        bombs = [] if bombs is None else None
+        bombs = dict() if bombs is None else None
         self.bombs = bombs
 
-    def collision(self):
-        self.bombs[-1][1].collider = "box"
+    def collision(self, bomb):
+        self.bombs[bomb][1].collider = "box"
 
-    def plant(self, p):
+    def explode(self, *bomb):
+        [destroy(i) for i in self.bombs[bomb]]
+        self.bombs.pop(bomb)
+
+    def plant(self, p, explosion_time=5):
         # Player position
         pos = p.get_player_position()
 
         # Check if bomb already exists
-        if pos not in [(x[1].x, x[1].y) for x in self.bombs]:
+        if pos not in self.bombs.keys():
             # [Trigger, model]
-            self.bombs.append([Trigger(model="sphere",
+            self.bombs[pos] = [Trigger(model="sphere",
                                        trigger_targets=(p.get_jogador(),),
                                        position=pos,
                                        color=color.clear,
@@ -31,13 +37,12 @@ class Bomb:
                                       scale=(.6, .6),
                                       render_queue=0,
                                       eternal=False,
-                                      position=pos)])
+                                      position=pos)]
 
             # Triggers
             # Set bomb collision after player jumps out
-            self.bombs[-1][0].on_trigger_exit = Func(self.collision)
+            self.bombs[pos][0].on_trigger_exit = Func(self.collision, pos)
 
-    def explode(self):
-        if len(self.bombs) > 0:
-            [destroy(i) for i in self.bombs[0]]
-            self.bombs.pop(0)
+            # Explode the bomb in X seconds (explosion_time)
+            # Will use another thread (threading)
+            Timer(explosion_time, self.explode, args=pos).start()

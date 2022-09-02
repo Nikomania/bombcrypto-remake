@@ -5,7 +5,7 @@ from ursina import application
 # Source
 from src.personagem import Personagem
 from src.mapas import Mapa
-from src.bomb import Bomb
+from src.bomb import Bombs
 
 
 if __name__ == "__main__":
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     PLAYER_POS = (4, 4)
 
     JOGADOR = Personagem(PLAYER_POS)
-    BOMBA = Bomb()
+    BOMBA = Bombs()
 
     MAPA1 = [["map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick"],
              ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],

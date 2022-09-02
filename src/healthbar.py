@@ -13,7 +13,7 @@ class Health:
                         Entity(model="quad",
                                parent=self.parent,
                                # A small rect
-                               scale=(1, .1),
+                               scale=(1*hp/100, .1),
                                render_queue=2,
                                always_on_top=True,
                                # Small fixes to scale
