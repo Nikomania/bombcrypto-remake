@@ -43,32 +43,28 @@ if __name__ == "__main__":
 
     MAPA = Mapa(MAPA1)
 
-    COMANDOS = {'w': JOGADOR.walk,
-                'a': JOGADOR.walk,
-                's': JOGADOR.walk,
-                'd': JOGADOR.walk,
-                "space": BOMBA.plant,
-                '1': BOMBA.explode}
+    # Key: button pressed
+    # First value of tuple: Function
+    # Second value of tuple: Parameters
+    COMANDOS = {'w': (JOGADOR.walk, ["player/player_costas", 0, PLAYER_SPEED]),
+                'a': (JOGADOR.walk, ["player/player_esq", -PLAYER_SPEED, 0]),
+                's': (JOGADOR.walk, ["player/player_1", 0, -PLAYER_SPEED]),
+                'd': (JOGADOR.walk, ["player/player_dir", PLAYER_SPEED, 0]),
+                "space": (BOMBA.plant, [JOGADOR]),
+                '1': (BOMBA.explode, [])}
 
-    PARAMETROS = [["player/player_costas", 0, PLAYER_SPEED],   # W
-                  ["player/player_esq", -PLAYER_SPEED, 0],     # A
-                  ["player/player_1", 0, -PLAYER_SPEED],       # S
-                  ["player/player_dir", PLAYER_SPEED, 0],      # D
-                  [JOGADOR],               # SPACE
-                  []]                                          # 1 - TEST
-
-
+    
     def update():
-        global COMANDOS, PARAMETROS
+        global COMANDOS
         for key, value in held_keys.items():
-            if key in COMANDOS.keys() and value != 0:
+            if key in COMANDOS and value != 0:
                 # Take all the params
-                params = PARAMETROS[list(COMANDOS.keys()).index(key)]
+                params = COMANDOS[key][1]
                 # Take the first param as function variable to the next test
                 func = params[0] if len(params) > 0 else False
                 # If the params it's a function, this statement will execute it to return the real params
                 # Else, it will just execute normally with params that're given before
-                COMANDOS[key](func()) if callable(func) else COMANDOS[key](*params)
+                COMANDOS[key][0](func()) if callable(func) else COMANDOS[key][0](*params)
 
     MAPA.gerar_mapa()
     camera.add_script(SmoothFollow(target=JOGADOR.get_jogador(), offset=(0, 0, -40), speed=10))
