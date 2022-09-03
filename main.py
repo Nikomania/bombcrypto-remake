@@ -1,6 +1,5 @@
 # Engine
 from ursina import *
-from ursina import application
 
 # Source
 from src.personagem import Personagem
@@ -71,5 +70,5 @@ if __name__ == "__main__":
                 COMANDOS[key](func()) if callable(func) else COMANDOS[key](*params)
 
     MAPA.gerar_mapa()
-    camera.add_script(SmoothFollow(target=JOGADOR.get_jogador(), offset=(0, 0, -40), speed=10))
+    camera.add_script(SmoothFollow(target=JOGADOR.get_jogador(), offset=(0, 0, -20), speed=10))
     game.run()
