@@ -1,11 +1,13 @@
-from ursina import Entity
 from ursina import *
-from ursina.window import *
+
+# Todo: Code refactoring
+# Todo: Tilemap editor
 
 
 class Mapa(object):
     def __init__(self, texturas):
         self.texturas = texturas
+        self.map = {}
 
     def gerar_mapa(self):
         # Map generation (x, y)
@@ -19,9 +21,15 @@ class Mapa(object):
                            x=x,
                            y=y,
                            eternal=False)
+                # Put into a vector list to future things
+                self.map[(e.x, e.y)] = e
 
                 # Objects with collision
                 if self.texturas[x][y] in ("map/brick", "map/something"):
                     e.collider = "box"
 
         # To-do: Each block converted into object blocks (future interaction)
+
+    @property
+    def map_objects(self):
+        return self.map

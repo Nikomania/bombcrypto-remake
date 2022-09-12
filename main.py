@@ -49,8 +49,7 @@ if __name__ == "__main__":
                 'a': (JOGADOR.walk, ["player/player_esq", -PLAYER_SPEED, 0]),
                 's': (JOGADOR.walk, ["player/player_1", 0, -PLAYER_SPEED]),
                 'd': (JOGADOR.walk, ["player/player_dir", PLAYER_SPEED, 0]),
-                "space": (BOMBA.plant, [JOGADOR]),
-                '1': (BOMBA.explode, [])}
+                "space": (BOMBA.plant, [JOGADOR, MAPA.map_objects])}
 
     
     def update():
