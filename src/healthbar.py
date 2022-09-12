@@ -14,7 +14,7 @@ class Health:
                                parent=self.parent,
                                # A small rect
                                scale=(1*hp/100, .1),
-                               render_queue=2,
+                               render_queue=5,
                                always_on_top=True,
                                # Small fixes to scale
                                x=self.parent.x * -.01,
@@ -25,7 +25,7 @@ class Health:
                                parent=self.parent,
                                # A small rect
                                scale=(1.12, .2),
-                               render_queue=1,
+                               render_queue=4,
                                always_on_top=True,
                                # Small fixes to scale
                                x=self.parent.x * -.008,

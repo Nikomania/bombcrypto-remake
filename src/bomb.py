@@ -20,7 +20,7 @@ class Bombs:
                                                    texture=f"materials/sprite/fire{self.explosion_level[level]}.png",
                                                    always_on_top=True,
                                                    scale=(1, 1),
-                                                   render_queue=0,
+                                                   render_queue=2,
                                                    eternal=False,
                                                    position=pos))
 
@@ -79,7 +79,7 @@ class Bombs:
                                       texture="materials/models/bomb0.png",
                                       always_on_top=True,
                                       scale=(.6, .6),
-                                      render_queue=0,
+                                      render_queue=3,
                                       eternal=False,
                                       position=pos)]
 

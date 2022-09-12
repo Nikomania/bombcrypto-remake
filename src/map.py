@@ -1,21 +1,21 @@
 from ursina import *
 
-# Todo: Code refactoring
 # Todo: Tilemap editor
 
 
-class Mapa(object):
-    def __init__(self, texturas):
-        self.texturas = texturas
+class MapGenerator(object):
+    def __init__(self, map_textures):
+        self.map_textures = map_textures
+        self.colliders = ("map/brick", "map/something")
         self.map = {}
 
-    def gerar_mapa(self):
+    def generate(self):
         # Map generation (x, y)
         # Doesn't need to be square
-        for x in range(len(self.texturas)):
-            for y in range(len(self.texturas[x])):
+        for x in range(len(self.map_textures)):
+            for y in range(len(self.map_textures[x])):
                 e = Entity(model="quad",
-                           texture=self.texturas[x][y] + ".png",
+                           texture=self.map_textures[x][y] + ".png",
                            visible=True,
                            render_queue=0,
                            x=x,
@@ -25,10 +25,8 @@ class Mapa(object):
                 self.map[(e.x, e.y)] = e
 
                 # Objects with collision
-                if self.texturas[x][y] in ("map/brick", "map/something"):
+                if self.map_textures[x][y] in self.colliders:
                     e.collider = "box"
-
-        # To-do: Each block converted into object blocks (future interaction)
 
     @property
     def map_objects(self):

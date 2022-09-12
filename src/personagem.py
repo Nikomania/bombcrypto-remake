@@ -10,7 +10,7 @@ class Personagem(object):
                               texture="materials/player/player_1.png",
                               always_on_top=True,
                               scale=(.6, .7),
-                              render_queue=1,
+                              render_queue=10,
                               eternal=False,
                               collider="box",
                               # Just a start space to prevent bugs (wall collision)
@@ -42,7 +42,7 @@ class Personagem(object):
             # destroy(hit_info.entity)
         # Prevent the player get stucked into the block
         else:
-            # To-do: Do the corner checks (bug)
+            # Todo: Do the corner checks (bug)
             if not p.x + x >= pos[0] and x < 0 or\
                     not p.x + x <= pos[0] and x > 0:
                 p.x += x

@@ -3,7 +3,7 @@ from ursina import *
 
 # Source
 from src.personagem import Personagem
-from src.mapas import Mapa
+from src.map import MapGenerator
 from src.bomb import Bombs
 
 
@@ -29,18 +29,18 @@ if __name__ == "__main__":
     JOGADOR = Personagem(PLAYER_POS)
     BOMBA = Bombs()
 
-    MAPA1 = [["map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick"],
-             ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
-             ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
-             ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
-             ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
-             ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
-             ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
-             ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
-             ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
-             ["map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick"]]
+    PREVIEW_MAP = [["map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick"],
+                   ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
+                   ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
+                   ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
+                   ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
+                   ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
+                   ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
+                   ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
+                   ["map/brick", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/fundo", "map/brick"],
+                   ["map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick", "map/brick"]]
 
-    MAPA = Mapa(MAPA1)
+    GAME_MAP = MapGenerator(PREVIEW_MAP)
 
     # Key: button pressed
     # First value of tuple: Function
@@ -49,7 +49,7 @@ if __name__ == "__main__":
                 'a': (JOGADOR.walk, ["player/player_esq", -PLAYER_SPEED, 0]),
                 's': (JOGADOR.walk, ["player/player_1", 0, -PLAYER_SPEED]),
                 'd': (JOGADOR.walk, ["player/player_dir", PLAYER_SPEED, 0]),
-                "space": (BOMBA.plant, [JOGADOR, MAPA.map_objects])}
+                "space": (BOMBA.plant, [JOGADOR, GAME_MAP.map_objects])}
 
     
     def update():
@@ -64,6 +64,6 @@ if __name__ == "__main__":
                 # Else, it will just execute normally with params that're given before
                 COMANDOS[key][0](func()) if callable(func) else COMANDOS[key][0](*params)
 
-    MAPA.gerar_mapa()
+    GAME_MAP.generate()
     camera.add_script(SmoothFollow(target=JOGADOR.get_jogador(), offset=(0, 0, -20), speed=10))
     game.run()
