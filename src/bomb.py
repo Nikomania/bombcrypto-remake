@@ -15,14 +15,22 @@ class Bombs:
     def collision(self, bomb):
         self.bombs[bomb][1].collider = "box"
 
-    def create_fire(self, bomb, pos, level):
-        self.explosion_objects[bomb].append(Entity(model="quad",
-                                                   texture=f"materials/sprite/fire{self.explosion_level[level]}.png",
-                                                   always_on_top=True,
-                                                   scale=(1, 1),
-                                                   render_queue=2,
-                                                   eternal=False,
-                                                   position=pos))
+    def create_fire(self, p, bomb, pos, level):
+        self.explosion_objects[bomb].extend([Entity(model="quad",
+                                                    texture=f"materials/sprite/fire{self.explosion_level[level]}.png",
+                                                    always_on_top=True,
+                                                    scale=(1, 1),
+                                                    render_queue=2,
+                                                    eternal=False,
+                                                    position=pos),
+                                             Trigger(model="sphere",
+                                                     trigger_targets=(p.get_jogador(),),
+                                                     position=pos,
+                                                     color=color.clear,
+                                                     radius=1)])
+
+        self.explosion_objects[bomb][1].on_trigger_enter = Func(p.hit, 30)
+        self.explosion_objects[bomb][1].on_trigger_exit = Func(p.hit, 50)
 
     def delete_objects(self, *pos):
         [destroy(i) for i in self.explosion_objects[pos]]
@@ -42,7 +50,7 @@ class Bombs:
             object_texture = str(objects[pos].texture)
             return True if object_texture in self.explosion_whitelist else False
 
-    def explode(self, map_objects, bomb, rng=2):
+    def explode(self, p, map_objects, bomb, rng=2):
         [destroy(i) for i in self.bombs[bomb]]
         self.bombs.pop(bomb)
 
@@ -50,16 +58,16 @@ class Bombs:
         x, y = bomb
         self.explosion_objects[bomb] = list()
         # Explosion central point
-        self.create_fire(bomb, (x, y), 0)
+        self.create_fire(p, bomb, (x, y), 0)
         # Explosion body
         for i in range(1, rng):
             for t in (((x+i, y), 1), ((x-i, y), 1), ((x, y+i), 2), ((x, y-i), 2)):
                 if self.test_collide(t[0], map_objects):
-                    self.create_fire(bomb, *t)
+                    self.create_fire(p, bomb, *t)
         # Explosion edge
         for i in (((x+rng, y), 3), ((x, y+rng), 4), ((x-rng, y), 5), ((x, y-rng), 6)):
             if self.test_collide(i[0], map_objects):
-                self.create_fire(bomb, *i)
+                self.create_fire(p, bomb, *i)
 
         Timer(.8, self.delete_objects, args=bomb).start()
 
@@ -89,4 +97,4 @@ class Bombs:
 
             # Explode the bomb in X seconds (explosion_time)
             # Will use another thread (threading)
-            Timer(explosion_time, self.explode, args=(map_objects, pos)).start()
+            Timer(explosion_time, self.explode, args=(p, map_objects, pos)).start()

@@ -6,7 +6,7 @@ from ursina import *
 class MapGenerator(object):
     def __init__(self, map_textures):
         self.map_textures = map_textures
-        self.colliders = ("map/brick", "map/something")
+        self.colliders = ("map/brick",)
         self.map = {}
 
     def generate(self):

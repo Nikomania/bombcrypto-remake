@@ -3,8 +3,10 @@ from ursina import *
 
 from src.healthbar import Health
 
+# Todo: Code refactoring !!!
 
-class Personagem(object):
+
+class Personagem():
     def __init__(self, player_pos, last_key=''):
         self.jogador = Entity(model="quad",
                               texture="materials/player/player_1.png",
@@ -19,7 +21,7 @@ class Personagem(object):
         self.x = self.jogador.x
         self.y = self.jogador.y
 
-        self.health = Health(self.jogador)
+        self.hp = Health(self.jogador)
 
     def get_jogador(self):
         return self.jogador
@@ -54,3 +56,7 @@ class Personagem(object):
 
     def get_last_key(self):
         return self.last_key
+
+    # Todo: Refactor this to the right way
+    def hit(self, damage):
+        self.hp.hit(damage)
