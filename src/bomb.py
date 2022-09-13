@@ -9,7 +9,7 @@ class Bombs:
         self.bombs = dict()
         # Explosion textures
         self.explosion_level = ("1_00", "2_00", "2_01", "3_00", "3_01", "3_02", "3_03")
-        self.explosion_whitelist = ("fundo.png", "anything.png")
+        self.explosion_whitelist = ("fundo.png",)
         self.explosion_objects = dict()
 
     def collision(self, bomb):
@@ -23,14 +23,14 @@ class Bombs:
                                                     render_queue=2,
                                                     eternal=False,
                                                     position=pos),
-                                             Trigger(model="sphere",
+                                             Trigger(model="quad",
                                                      trigger_targets=(p.get_jogador(),),
                                                      position=pos,
                                                      color=color.clear,
-                                                     radius=1)])
+                                                     radius=1,
+                                                     update_rate=1)])
 
-        self.explosion_objects[bomb][1].on_trigger_enter = Func(p.hit, 30)
-        self.explosion_objects[bomb][1].on_trigger_exit = Func(p.hit, 50)
+        self.explosion_objects[bomb][1].on_trigger_enter = Func(p.hit, -34)
 
     def delete_objects(self, *pos):
         [destroy(i) for i in self.explosion_objects[pos]]
